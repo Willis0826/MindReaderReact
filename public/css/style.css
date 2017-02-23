@@ -1,0 +1,335 @@
+html{
+  height: 100%;
+  width: 100%;
+}
+body{
+  background-color: #2c3e50;
+  margin: 0px;
+  width: 100%;
+  overflow: hidden;
+  font-family: Microsoft JhengHei;
+}
+
+#greeting{
+  padding-top: 50px;
+  z-index: 1000;
+}
+/* 對話訊息框 初始隱藏 */
+#question{
+  z-index: 1000;
+  display: none;
+  vertical-align: middle;
+  transition: all .2s ease-in-out;
+}
+
+.chat_box{
+  cursor: pointer;
+  position: fixed;
+  bottom: 0px;
+  right: 10px;
+  background-color: #ecf0f1;
+  width: 250px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.chat_head{
+  background-color: #3498db;
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.chat_body{
+  height: 400px;
+}
+
+.friend,.friend_B{
+  padding: 20px;
+}
+
+.msg_box{
+  position: fixed;
+  padding: 0px;
+  bottom: 0px;
+  background-color: #ecf0f1;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.msg_box_B{
+  position: fixed;
+  bottom: 0px;
+  right: 530px;
+  background-color: #ecf0f1;
+  width: 250px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.msg_head, .msg_head_B{
+  cursor: pointer;
+  background-color: #bdc3c7;
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.msg_footer{
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+.close, .close_B{
+  float: right;
+}
+
+.msg_body{
+  height: 250px;
+  font-size: 14px;
+  overflow: auto;
+}
+
+.msg_line_holder{
+  overflow: auto;
+  width: 100%;
+}
+
+.msg_A{
+  background-color: #bdc3c7;
+  padding: 10px;
+  margin: 5px 10px 5px 30px;
+  float: right;
+  border-radius: 5px 15px;
+  max-width: 235px;
+  word-wrap: break-word;
+  display: inline-table;
+}
+
+.msg_B{
+  background-color: #fff;
+  padding: 10px;
+  margin: 5px 30px 5px 10px;
+  float: left;
+  border-radius: 15px 5px;
+  max-width: 235px;
+  word-wrap: break-word;
+  display: inline-table;
+}
+
+.msg_input{
+  border: transparent;
+  padding: 10px;
+  border-top: 1px solid #bdc3c7;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.full-res-bg1,.full-res-bgStart{
+  position: absolute;
+  bottom: 0;
+  left: 0px;
+  z-index: -1;
+  background-repeat: no-repeat;
+  background-position: 1px 1px;
+  background-size: contain;
+}
+.full-res-bg2{
+  z-index: 1000;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  bottom: 0;
+  left: 125px;
+  z-index: -1;
+  background: url("./../img/magicBall.png");
+  background-repeat: no-repeat;
+  background-position: 0px 5px;
+  background-size: contain;
+}
+.full-res-bg2-shine{
+  background: url("./../img/shineMagicBall.png");
+  background-repeat: no-repeat;
+  background-position: 0px -10px;
+  background-size: contain;
+}
+.full-res-bg2 .inner-msg{
+  font-weight: bold;
+}
+.yellow-mark{
+  color: #4295f4;
+  font-size: 60px;
+}
+
+
+.contain-white{
+  transition: all .2s ease-in-out;
+  border: 10px solid rgba(255, 255, 255, 0.5);
+  padding: 5px 10px;
+}
+.contain-white:hover{
+  padding: 5px 10px;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+.contain-white:hover>h2.contain-title, .contain-white:hover>h3.contain-sub{
+  color: rgba(255, 255, 255, 0.8);
+}
+.contain-white:hover .job-wrap{
+  background: rgba(255, 255, 255, 0.7);
+}
+
+h2.contain-title{
+  transition: all .2s ease-in-out;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 50px;
+}
+
+h3.contain-sub{
+  transition: all .2s ease-in-out;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 22px;
+}
+
+.job-wrap{
+  background-color: rgba(255,255,255,.5);
+  display: inline-block;
+  padding: 10px;
+  font-weight: 600;
+  margin: 5px;
+  font-size: 18px;
+  width: 95px;
+  text-align: center;
+}
+
+.btn-white{
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  width: 140px;
+  text-align: center;
+
+}
+
+.btn-four-word{
+  font-size: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.start-button-wrap, .yes-button-wrap, .no-button-wrap, .again-button-wrap{
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.start-button-wrap:hover .button-text-wrap, .yes-button-wrap:hover .button-text-wrap, .no-button-wrap:hover .button-text-wrap, .again-button-wrap:hover .button-text-wrap{
+  background: #ffd966;
+}
+.start-button-wrap .button-text-wrap{
+  background: rgba(0,0,0,1);
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 35px;
+  padding-left: 65px;
+  margin-left: 40px
+}
+.yes-button-wrap .button-text-wrap{
+  background: #00cc99;
+  border-radius: 4px;
+  color: #fff;
+  padding: 10px 15px;
+  padding-left: 40px;
+}
+.no-button-wrap .button-text-wrap{
+  background: #ff0000;
+  border-radius: 4px;
+  color: #fff;
+  padding: 10px 15px;
+  padding-right: 40px;
+}
+.again-button-wrap .button-text-wrap{
+  background: #263b78;
+  border-radius: 4px;
+  color: #fff;
+  padding: 10px 10px;
+  padding-right: 5px;
+}
+
+.button-text-wrap>h2{
+  margin: 0;
+  font-size:20px;
+  font-weight: bold;
+}
+
+textarea:focus{
+  outline: none;
+}
+
+footer{
+  position: fixed;
+  z-index: 2000;
+  height: 70px;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(255,255,255,0.4);
+  color: rgba(0,0,0,0.7);
+}
+
+footer a{
+  font-weight: 600;
+}
+footer a:hover{
+  text-decoration: none;
+}
+
+/* 職位清單推擠  低於螢幕 */
+@media screen and (max-width: 1255px) {
+  #greeting{
+    padding-top: 50px;
+  }
+}
+
+/*height*/
+@media screen and (max-height: 520px) {
+  #greeting{
+    padding-top: 10px;
+  }
+  h2.contain-title{
+    margin-top: 5px;
+  }
+  h3.contain-sub{
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+/* col-sm 992 */
+@media screen and (max-width: 992px) {
+  .contain-white{
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  h2.contain-title{
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 50px;
+  }
+
+  h3.contain-sub{
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+/*縮小兼間距 緊密排版*/
+@media screen and (max-width: 892px) {
+  .job-wrap{
+    font-size: 15px;
+    width: 80px;
+    padding: 5px;
+  }
+  h2.contain-title{
+    font-size: 40px;
+  }
+
+  h3.contain-sub{
+    font-size: 20px;
+  }
+}
