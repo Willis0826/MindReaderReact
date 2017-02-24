@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
+import RecordDisplay from './recordDisplay';
+import Footer from './footer';
 
-class App extends Component {
+class AdminApp extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <RecordDisplay />
+        <Footer />
       </div>
     );
   }
 }
 
-export default App;
+export default AdminApp;

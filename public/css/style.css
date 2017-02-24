@@ -16,8 +16,8 @@ body{
 }
 /* 對話訊息框 初始隱藏 */
 #question{
+  display: table-cell;
   z-index: 1000;
-  display: none;
   vertical-align: middle;
   transition: all .2s ease-in-out;
 }
@@ -124,7 +124,7 @@ body{
   box-sizing: border-box;
 }
 
-.full-res-bg1,.full-res-bgStart{
+.full-res-bgStart{
   position: absolute;
   bottom: 0;
   left: 0px;
@@ -133,14 +133,29 @@ body{
   background-position: 1px 1px;
   background-size: contain;
 }
-.full-res-bg2{
-  z-index: 1000;
-  width: 250px;
-  height: 250px;
-  position: absolute;
-  bottom: 0;
-  left: 125px;
+.full-res-bg1{
+  display: block;
+  position: absolute;;
+  bottom: 250px;
+  left: 50%;
+  margin-left: -256px;
   z-index: -1;
+  background-repeat: no-repeat;
+  background-position: 1px 1px;
+  background-size: contain;
+}
+.full-res-bg2{
+  display: table;
+  z-index: 1000;
+  width: 450px;
+  height: 450px;
+  padding: 100px;
+  padding-top: 45px;
+  margin-left: -225px;
+  margin-bottom: -375px;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
   background: url("./../img/magicBall.png");
   background-repeat: no-repeat;
   background-position: 0px 5px;
@@ -159,7 +174,6 @@ body{
   color: #4295f4;
   font-size: 60px;
 }
-
 
 .contain-white{
   transition: all .2s ease-in-out;
@@ -203,12 +217,21 @@ h3.contain-sub{
 }
 
 .btn-white{
-  font-size: 30px;
-  color: white;
+  transition: all .2s ease-in-out;
+  display: inline-block;
+  font-size: 16px;
+  color: rgba(255,255,255,.7);
   cursor: pointer;
   width: 140px;
+  padding: 5px;
+  border: 5px solid rgba(255,255,255,.7);
   text-align: center;
-
+  font-weight: 600;
+}
+.btn-white:hover{
+  color: white;
+  border: 5px solid white;
+  padding: 4px 6px;
 }
 
 .btn-four-word{
@@ -232,28 +255,28 @@ h3.contain-sub{
   color: #fff;
   padding: 12px 35px;
   padding-left: 65px;
-  margin-left: 40px
+  margin-left: 39px
 }
 .yes-button-wrap .button-text-wrap{
   background: #00cc99;
   border-radius: 4px;
   color: #fff;
   padding: 10px 15px;
-  padding-left: 40px;
+  padding-left: 39px;
 }
 .no-button-wrap .button-text-wrap{
   background: #ff0000;
   border-radius: 4px;
   color: #fff;
   padding: 10px 15px;
-  padding-right: 40px;
+  padding-right: 39px;
 }
 .again-button-wrap .button-text-wrap{
   background: #263b78;
   border-radius: 4px;
   color: #fff;
   padding: 10px 10px;
-  padding-right: 5px;
+  padding-right: 4px;
 }
 
 .button-text-wrap>h2{

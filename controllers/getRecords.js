@@ -5,6 +5,7 @@ module.exports = function(req, res, next){
 
   Record.find({}).exec(function(err, records){
     if (err) throw err;
-    res.json(posts);
+
+    res.json(records);
   });
 };
