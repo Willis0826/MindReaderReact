@@ -99,7 +99,7 @@ class PredictGame extends Component {
           });
         }
       }
-      xhttp.open("POST", "https://128.199.155.52:5555/");
+      xhttp.open("POST", "http://128.199.155.52:5555/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
@@ -148,7 +148,7 @@ class PredictGame extends Component {
         //,在第一位 需要調整
         this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
       }
-      xhttp.open("POST", "https://128.199.155.52:5555/");
+      xhttp.open("POST", "http://128.199.155.52:5555/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
@@ -187,7 +187,7 @@ class PredictGame extends Component {
         //,在第一位 需要調整
         this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
       }
-      xhttp.open("POST", "https://128.199.155.52:5555/");
+      xhttp.open("POST", "http://128.199.155.52:5555/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
