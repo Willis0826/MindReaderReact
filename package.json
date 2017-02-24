@@ -7,7 +7,13 @@
   },
   "dependencies": {
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "babel-preset-stage-1": "^6.1.18",
+    "body-parser": "^1.15.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "lodash": "^3.10.1",
+    "mongoose": "^4.4.13"
   },
   "scripts": {
     "start": "node app.js",
