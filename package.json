@@ -1,7 +1,11 @@
 {
   "name": "chat-react",
   "version": "0.1.0",
-  "private": true,
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
   "devDependencies": {
     "react-scripts": "0.9.0",
     "babel-cli": "^6.6.5",
