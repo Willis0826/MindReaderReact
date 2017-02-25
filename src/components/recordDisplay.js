@@ -11,66 +11,51 @@ class RecordDisplay extends Component {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
       if(xhttp.readyState == 4 && xhttp.status == 200){
-        var resOject = JSON.parse(xhttp.responseText);
-        
+        var resObject = JSON.parse(xhttp.responseText);
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: resObject.schools,
+            datasets: [{
+                label: '# 測驗人數',
+                data: resObject.records,
+                backgroundColor: resObject.barColors,
+                borderColor: resObject.barBorderColors,
+                borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                ticks: {
+                  fontColor: "rgba(255,255,255,0.8)",
+                  beginAtZero:true
+                },
+                gridLines:{
+                  color:"rgba(255,255,255,0.5)",
+                  zeroLineColor:"rgba(255,255,255,0.5)"
+                }
+              }],
+              yAxes:[{
+                ticks: {
+                  fontColor: "rgba(255,255,255,0.8)",
+                  beginAtZero:true
+                },
+                gridLines:{
+                  color:"rgba(255,255,255,0.2)",
+                  zeroLineColor:"rgba(255,255,255,0.2)"
+                }
+              }],
+            },
+            maintainAspectRatio: false,
+            responsive:true
+          }
+        });
       }
     }
     xhttp.open("GET", "/record");
     xhttp.send();
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ["國立台北教育大學", "國立臺灣科技大學", "銘傳大學(台北)", "國立臺北商業大學", "東吳大學", "東海"],
-        datasets: [{
-            label: '# 測驗人數',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.4)',
-                'rgba(54, 162, 235, 0.4)',
-                'rgba(255, 206, 86, 0.4)',
-                'rgba(75, 192, 192, 0.4)',
-                'rgba(153, 102, 255, 0.24)',
-                'rgba(255, 159, 64, 0.4)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            ticks: {
-              fontColor: "rgba(255,255,255,0.8)",
-              beginAtZero:true
-            },
-            gridLines:{
-              color:"rgba(255,255,255,0.5)",
-              zeroLineColor:"rgba(255,255,255,0.5)"
-            }
-          }],
-          yAxes:[{
-            ticks: {
-              fontColor: "rgba(255,255,255,0.8)",
-              beginAtZero:true
-            },
-            gridLines:{
-              color:"rgba(255,255,255,0.2)",
-              zeroLineColor:"rgba(255,255,255,0.2)"
-            }
-          }],
-        },
-        maintainAspectRatio: false,
-        responsive:true
-      }
-    });
   }
   render() {
     return (
