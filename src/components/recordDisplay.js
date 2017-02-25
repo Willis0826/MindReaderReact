@@ -12,7 +12,7 @@ class RecordDisplay extends Component {
     xhttp.onreadystatechange = function(){
       if(xhttp.readyState == 4 && xhttp.status == 200){
         var resOject = JSON.parse(xhttp.responseText);
-
+        
       }
     }
     xhttp.open("GET", "/record");
@@ -26,12 +26,12 @@ class RecordDisplay extends Component {
             label: '# 測驗人數',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 0.4)',
+                'rgba(54, 162, 235, 0.4)',
+                'rgba(255, 206, 86, 0.4)',
+                'rgba(75, 192, 192, 0.4)',
+                'rgba(153, 102, 255, 0.24)',
+                'rgba(255, 159, 64, 0.4)'
             ],
             borderColor: [
                 'rgba(255,99,132,1)',
@@ -46,17 +46,31 @@ class RecordDisplay extends Component {
       },
       options: {
         scales: {
-          yAxes: [{
+          xAxes: [{
             ticks: {
+              fontColor: "rgba(255,255,255,0.8)",
               beginAtZero:true
+            },
+            gridLines:{
+              color:"rgba(255,255,255,0.5)",
+              zeroLineColor:"rgba(255,255,255,0.5)"
             }
-          }]
+          }],
+          yAxes:[{
+            ticks: {
+              fontColor: "rgba(255,255,255,0.8)",
+              beginAtZero:true
+            },
+            gridLines:{
+              color:"rgba(255,255,255,0.2)",
+              zeroLineColor:"rgba(255,255,255,0.2)"
+            }
+          }],
         },
         maintainAspectRatio: false,
         responsive:true
       }
     });
-    console.log(myChart);
   }
   render() {
     return (
@@ -64,11 +78,13 @@ class RecordDisplay extends Component {
         <div className="text-center">
           <h2 className="contain-title">讀心師統計</h2>
         </div>
-        <canvas id="myChart" width="100" height="100"></canvas>
-        <div className="col-md-6 text-center">
+        <div className="col-md-8 col-md-offset-2 padding-bottom-20">
+          <canvas id="myChart" width="100" height="400"></canvas>
+        </div>
+        <div className="col-md-3 col-md-offset-3 text-center margin-bottom-20">
           <div className="btn-white">總覽(場次)</div>
         </div>
-        <div className="col-md-6 text-center">
+        <div className="col-md-3 text-center">
           <div className="btn-white">總覽(細節)</div>
         </div>
       </div>

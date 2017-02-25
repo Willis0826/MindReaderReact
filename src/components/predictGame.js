@@ -35,6 +35,12 @@ var crystalBall = {
 var crystalBallImg = {
   width: 80 + 'px'
 }
+var poker = {
+  position: 'absolute',
+  marginTop: -20 + 'px',
+  marginRight: 0 + 'px',
+  right: 0
+}
 
 const QuestionTable = [
   '這個工作需要常常與人接觸嗎？',
@@ -74,6 +80,7 @@ class PredictGame extends Component {
     this.showUpGreeting = this.showUpGreeting.bind(this);
     this.replyQuestionWithConfirm = this.replyQuestionWithConfirm.bind(this);
     this.replyQuestionWithDeny = this.replyQuestionWithDeny.bind(this);
+    this.replyQuestionWithUnknow = this.replyQuestionWithUnknow.bind(this);
     this.denyAnswer = this.denyAnswer.bind(this);
     this.sendRecord = this.sendRecord.bind(this);
   }
@@ -99,7 +106,7 @@ class PredictGame extends Component {
           });
         }
       }
-      xhttp.open("POST", "http://128.199.155.52:5555/");
+      xhttp.open("POST", "https://mindreader.johnthunder.one/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
@@ -148,7 +155,7 @@ class PredictGame extends Component {
         //,在第一位 需要調整
         this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
       }
-      xhttp.open("POST", "http://128.199.155.52:5555/");
+      xhttp.open("POST", "https://mindreader.johnthunder.one/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
@@ -187,7 +194,46 @@ class PredictGame extends Component {
         //,在第一位 需要調整
         this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
       }
-      xhttp.open("POST", "http://128.199.155.52:5555/");
+      xhttp.open("POST", "https://mindreader.johnthunder.one/");
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
+    });
+  }
+  replyQuestionWithUnknow(){
+    this.setState({
+      queryToken: {
+        questions: this.state.queryToken.questions,
+        inputs: this.state.queryToken.inputs + ',3'
+      }
+    }, ()=>{
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = ()=> {
+        if(xhttp.readyState == 4 && xhttp.status == 200){
+          var resOject = JSON.parse(xhttp.responseText);
+          if(resOject.Question == null){
+            //有答案了
+            this.setState({
+              isHavingAnswer: true,
+              answer: resOject.Answer
+            },this.sendRecord);
+          }
+          else{
+            var questionNum = parseInt(resOject.Question.split("Q")[1]);
+            this.setState({
+              msgContent: QuestionTable[questionNum-1],
+              queryToken: {
+                questions: this.state.queryToken.questions + "," + resOject.Question,
+                inputs: this.state.queryToken.inputs
+              }
+            });
+          }
+        }
+      }
+      if(this.state.queryToken.inputs.indexOf(',') == 0){
+        //,在第一位 需要調整
+        this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
+      }
+      xhttp.open("POST", "https://mindreader.johnthunder.one/");
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
@@ -269,6 +315,18 @@ class PredictGame extends Component {
                   </div>
                   <div className="button-text-wrap">
                     <h2>不是</h2>
+                  </div>
+                </div>
+              </div>
+              )}
+              {this.state.isHavingAnswer?(null):(
+              <div className="col-xs-12 text-center">
+                <div id="unknowBtn" onClick={this.replyQuestionWithUnknow} className="unknow-button-wrap">
+                  <div className="" style={poker}>
+                    <img style={waterImg} src="assets/img/poker.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>不確定</h2>
                   </div>
                 </div>
               </div>

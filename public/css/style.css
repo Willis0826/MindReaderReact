@@ -10,6 +10,13 @@ body{
   font-family: Microsoft JhengHei;
 }
 
+.padding-bottom-20{
+  padding-bottom: 20px;
+}
+.margin-bottom-20{
+  margin-bottom: 20px;
+}
+
 #greeting{
   padding-top: 50px;
   z-index: 1000;
@@ -240,13 +247,13 @@ h3.contain-sub{
   padding-bottom: 12px;
 }
 
-.start-button-wrap, .yes-button-wrap, .no-button-wrap, .again-button-wrap{
+.start-button-wrap, .unknow-button-wrap, .yes-button-wrap, .no-button-wrap, .again-button-wrap{
   display: inline-block;
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
 }
-.start-button-wrap:hover .button-text-wrap, .yes-button-wrap:hover .button-text-wrap, .no-button-wrap:hover .button-text-wrap, .again-button-wrap:hover .button-text-wrap{
+.start-button-wrap:hover .button-text-wrap, .unknow-button-wrap:hover .button-text-wrap, .yes-button-wrap:hover .button-text-wrap, .no-button-wrap:hover .button-text-wrap, .again-button-wrap:hover .button-text-wrap{
   background: #ffd966;
 }
 .start-button-wrap .button-text-wrap{
@@ -256,6 +263,12 @@ h3.contain-sub{
   padding: 12px 35px;
   padding-left: 65px;
   margin-left: 39px
+}
+.unknow-button-wrap .button-text-wrap{
+  background: rgba(0,0,0,1);
+  border-radius: 4px;
+  color: #fff;
+  padding: 9px 35px;
 }
 .yes-button-wrap .button-text-wrap{
   background: #00cc99;
