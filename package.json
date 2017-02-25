@@ -2,6 +2,7 @@
   "name": "chat-react",
   "version": "0.1.0",
   "main": "app.js",
+  "private": true,
   "scripts": {
     "start": "node app.js",
     "build": "react-scripts build",
