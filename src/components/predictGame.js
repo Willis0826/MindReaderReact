@@ -63,6 +63,7 @@ const QuestionTable = [
   '這個職業非常需要相關科系背景嗎？',
   '這是一個可以在家進行工作的職業嗎？'
 ];
+var LocalQuestion = ['你吃素嗎？','你系歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
 
 class PredictGame extends Component {
   constructor(props){
@@ -71,6 +72,7 @@ class PredictGame extends Component {
       isBegin: false,
       isHavingAnswer: false,
       isRecordedWrong: false,
+      isLocalQuestion: false,
       queryToken: null,
       msgContent: null,
       answer: null
@@ -82,6 +84,8 @@ class PredictGame extends Component {
     this.replyQuestionWithDeny = this.replyQuestionWithDeny.bind(this);
     this.replyQuestionWithUnknow = this.replyQuestionWithUnknow.bind(this);
     this.denyAnswer = this.denyAnswer.bind(this);
+    this.askLocalQuestion = this.askLocalQuestion.bind(this);
+    this.replyLocalQuestion = this.replyLocalQuestion.bind(this);
     this.sendRecord = this.sendRecord.bind(this);
   }
   showUpMsgBox(){
@@ -121,7 +125,10 @@ class PredictGame extends Component {
       answer: null
     });
   }
+  //是 回應問題
   replyQuestionWithConfirm(){
+    //動畫效果
+    document.getElementById('question').style.opacity = 0;
     this.setState({
       queryToken: {
         questions: this.state.queryToken.questions,
@@ -149,6 +156,8 @@ class PredictGame extends Component {
               }
             });
           }
+          //動畫效果
+          document.getElementById('question').style.opacity = 1;
         }
       }
       if(this.state.queryToken.inputs.indexOf(',') == 0){
@@ -160,7 +169,10 @@ class PredictGame extends Component {
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
   }
+  //不是 回應問題
   replyQuestionWithDeny(){
+    //動畫效果
+    document.getElementById('question').style.opacity = 0;
     this.setState({
       queryToken: {
         questions: this.state.queryToken.questions,
@@ -186,8 +198,14 @@ class PredictGame extends Component {
                 questions: this.state.queryToken.questions + "," + resOject.Question,
                 inputs: this.state.queryToken.inputs
               }
+            },()=>{
+              if(LocalQuestion.length > 0){
+                this.askLocalQuestion();
+              }
             });
           }
+          //動畫效果
+          document.getElementById('question').style.opacity = 1;
         }
       }
       if(this.state.queryToken.inputs.indexOf(',') == 0){
@@ -199,7 +217,10 @@ class PredictGame extends Component {
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
   }
+  //不知道 回應問題
   replyQuestionWithUnknow(){
+    //動畫效果
+    document.getElementById('question').style.opacity = 0;
     this.setState({
       queryToken: {
         questions: this.state.queryToken.questions,
@@ -227,6 +248,8 @@ class PredictGame extends Component {
               }
             });
           }
+          //動畫效果
+          document.getElementById('question').style.opacity = 1;
         }
       }
       if(this.state.queryToken.inputs.indexOf(',') == 0){
@@ -247,13 +270,35 @@ class PredictGame extends Component {
       msgContent: <div>什麼！我答錯了嗎？<br/>下一次我會想得更清楚的，在一次。</div>
     });
   }
+  //Ask Local Question
+  askLocalQuestion(){
+    var randomIndex = Math.floor((Math.random() * LocalQuestion.length));
+    this.setState({
+      isLocalQuestion: true,
+      localMsgContent: LocalQuestion[randomIndex]
+    },()=>{
+      LocalQuestion.splice(randomIndex, 1);
+    });
+  }
+  replyLocalQuestion(){
+    //動畫效果
+    document.getElementById('question').style.opacity = 0;
+    this.setState({
+      isLocalQuestion: false
+    },()=>{
+      //動畫效果
+      setTimeout(()=>{
+        document.getElementById('question').style.opacity = 1;
+      },400);
+    });
+  }
   //AJAX Send Record
   sendRecord(){
     //post record
     var d = new Date();
     var eventName;
     var isValidTime = true;
-    if(1488067200000 > d.getTime() && d.getTime() > 1487980800000){
+    if(1488326400000 > d.getTime() && d.getTime() > 1487980800000){
       eventName = '台科大';
     }
     else if(1488412800000 > d.getTime() && d.getTime() > 1488326400000){
@@ -322,30 +367,13 @@ class PredictGame extends Component {
         <div>
           <img ref="bg1" src="assets/img/magicGirl.png" className="full-res-bg1" />
           <div ref="bg2" className="full-res-bg2">
+          {this.state.isLocalQuestion?(
             <div id="question" className="msg_main_wrap">
               <div className="msg_main_msg">
-                {this.state.isHavingAnswer && !this.state.isRecordedWrong?(
-                  <h3>
-                    你想從事 : <br/>
-                    <span className="yellow-mark"> {this.state.answer} </span><br/>
-                    我猜中了嗎 ?
-                  </h3>
-                ):(
-                  <h3 className="inner-msg">{this.state.msgContent}</h3>
-                )}
+                <h3 className="inner-msg">{this.state.localMsgContent}</h3>
               </div>
-              <div className={this.state.isRecordedWrong && this.state.isHavingAnswer?("col-xs-12 text-center"):("col-xs-6 text-center")}>
-                {this.state.isHavingAnswer?(
-                <div id="againBtn" onClick={this.showUpGreeting} className="again-button-wrap">
-                  <div style={magicBall}>
-                    <img style={magicBallImg} src="assets/img/magic.png" alt="" />
-                  </div>
-                  <div className="button-text-wrap">
-                    <h2>再來一次</h2>
-                  </div>
-                </div>
-                ):(
-                <div id="greenBtn" onClick={this.replyQuestionWithConfirm} className="yes-button-wrap">
+              <div className="col-xs-6 text-center">
+                <div id="greenBtn" onClick={this.replyLocalQuestion} className="yes-button-wrap">
                   <div style={hat}>
                     <img style={hatImg} src="assets/img/hat.png" alt="" />
                   </div>
@@ -353,11 +381,9 @@ class PredictGame extends Component {
                     <h2>是的</h2>
                   </div>
                 </div>
-                )}
               </div>
-              {this.state.isRecordedWrong?(null):(
               <div className="col-xs-6 text-center">
-                <div id="redBtn" onClick={this.state.isHavingAnswer?this.denyAnswer:this.replyQuestionWithDeny} className="no-button-wrap">
+                <div id="redBtn" onClick={this.replyLocalQuestion} className="no-button-wrap">
                   <div className="" style={water}>
                     <img style={waterImg} src="assets/img/water.png" alt="" />
                   </div>
@@ -366,10 +392,8 @@ class PredictGame extends Component {
                   </div>
                 </div>
               </div>
-              )}
-              {this.state.isHavingAnswer?(null):(
               <div className="col-xs-12 text-center">
-                <div id="unknowBtn" onClick={this.replyQuestionWithUnknow} className="unknow-button-wrap">
+                <div id="unknowBtn" onClick={this.replyLocalQuestion} className="unknow-button-wrap">
                   <div className="" style={poker}>
                     <img style={waterImg} src="assets/img/poker.png" alt="" />
                   </div>
@@ -378,11 +402,70 @@ class PredictGame extends Component {
                   </div>
                 </div>
               </div>
-              )}
+            </div>
+          ):(
+          <div id="question" className="msg_main_wrap">
+            <div className="msg_main_msg">
+            {this.state.isHavingAnswer && !this.state.isRecordedWrong?(
+              <h3>
+                你想從事 : <br/>
+                <span className="yellow-mark"> {this.state.answer} </span><br/>
+                我猜中了嗎 ?
+              </h3>
+            ):(
+              <h3 className="inner-msg">{this.state.msgContent}</h3>
+            )}
+          </div>
+          <div className={this.state.isRecordedWrong && this.state.isHavingAnswer?("col-xs-12 text-center"):("col-xs-6 text-center")}>
+          {this.state.isHavingAnswer?(
+            <div id="againBtn" onClick={this.showUpGreeting} className="again-button-wrap">
+              <div style={magicBall}>
+                <img style={magicBallImg} src="assets/img/magic.png" alt="" />
+              </div>
+              <div className="button-text-wrap">
+                <h2>再來一次</h2>
+              </div>
+            </div>
+          ):(
+            <div id="greenBtn" onClick={this.replyQuestionWithConfirm} className="yes-button-wrap">
+              <div style={hat}>
+                <img style={hatImg} src="assets/img/hat.png" alt="" />
+              </div>
+              <div className="button-text-wrap">
+                <h2>是的</h2>
+              </div>
+            </div>
+          )}
+          </div>
+          {this.state.isRecordedWrong?(null):(
+          <div className="col-xs-6 text-center">
+            <div id="redBtn" onClick={this.state.isHavingAnswer?this.denyAnswer:this.replyQuestionWithDeny} className="no-button-wrap">
+              <div className="" style={water}>
+                <img style={waterImg} src="assets/img/water.png" alt="" />
+              </div>
+              <div className="button-text-wrap">
+                <h2>不是</h2>
+              </div>
             </div>
           </div>
+          )}
+          {this.state.isHavingAnswer?(null):(
+          <div className="col-xs-12 text-center">
+            <div id="unknowBtn" onClick={this.replyQuestionWithUnknow} className="unknow-button-wrap">
+              <div className="" style={poker}>
+                <img style={waterImg} src="assets/img/poker.png" alt="" />
+              </div>
+              <div className="button-text-wrap">
+                <h2>不確定</h2>
+              </div>
+            </div>
+          </div>
+          )}
         </div>
-        ):(
+        )}
+      </div>
+    </div>
+    ):(
         <div>
           <img ref="bgStart" src="assets/img/startMagic.png" className="full-res-bgStart"/>
           <div id="greeting" className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
