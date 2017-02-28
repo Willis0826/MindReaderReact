@@ -21,7 +21,6 @@ module.exports = function(req, res, next){
         }
       }
     }
-    console.log(records);
     resObejct.barColors = [
                           'rgba(255, 99, 132, 0.4)',
                           'rgba(54, 162, 235, 0.4)',

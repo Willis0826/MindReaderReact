@@ -343,46 +343,43 @@ class PredictGame extends Component {
     var d = new Date();
     var eventName;
     var isValidTime = true;
-    if(1488326400000 > d.getTime() && d.getTime() > 1487980800000){
-      eventName = '台科大';
-    }
-    else if(1488412800000 > d.getTime() && d.getTime() > 1488326400000){
+    if(1488384026000 > d.getTime() && d.getTime() > 1488299426000){
       //3月1
       eventName = '國北教';
     }
-    else if(1488499200000 > d.getTime() && d.getTime() > 1488412800000){
+    else if(1488470426000 > d.getTime() && d.getTime() > 1488384026000){
       //3月2
       eventName = '文化';
     }
-    else if(1488931200000 > d.getTime() && d.getTime() > 1488844800000){
+    else if(1488902426000 > d.getTime() && d.getTime() > 1488816026000){
       //3月7
       eventName = '台科大';
     }
-    else if(1489017600000 > d.getTime() && d.getTime() > 1488931200000){
+    else if(1488988826000 > d.getTime() && d.getTime() > 1488902426000){
       //3月8
       eventName = '世新';
     }
-    else if(1489190400000 > d.getTime() && d.getTime() > 1489104000000){
+    else if(1489161626000 > d.getTime() && d.getTime() > 1489075226000){
       //3月10
       eventName = '師大';
     }
-    else if(1489449600000 > d.getTime() && d.getTime() > 1489363200000){
+    else if(1489420826000 > d.getTime() && d.getTime() > 1489334426000){
       //3月13
       eventName = '中原';
     }
-    else if(1489536000000 > d.getTime() && d.getTime() > 1489449600000){
+    else if(1489507226000 > d.getTime() && d.getTime() > 1489420826000){
       //3月14
       eventName = '北商';
     }
-    else if(1489622400000 > d.getTime() && d.getTime() > 1489536000000){
+    else if(1489593626000 > d.getTime() && d.getTime() > 1489507226000){
       //3月15
       eventName = '東吳';
     }
-    else if(1489795200000 > d.getTime() && d.getTime() > 1489708800000){
+    else if(1489766426000 > d.getTime() && d.getTime() > 1489680026000){
       //3月17
       eventName = '淡江';
     }
-    else if(1489881600000 > d.getTime() && d.getTime() > 1489795200000){
+    else if(1489852826000 > d.getTime() && d.getTime() > 1489766426000){
       //3月18
       eventName = '圓山花博';
     }
