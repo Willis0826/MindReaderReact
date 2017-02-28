@@ -28,5 +28,5 @@ Record : {<br>
 每一筆資料(Record)紀載活動場次與測試紀錄，於後端中顯示各項總和(Sum)。<br>
 呼叫 : GET /record 可以取得紀錄。<br>
 呼叫 : POST /record 可以上傳紀錄。<br>
-  
-![Alt text](/public/img/ms-logo.png)
+
+<img src="public/img/ms-logo.png" width="200">
