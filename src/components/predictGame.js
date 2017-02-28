@@ -41,6 +41,13 @@ var poker = {
   marginRight: 0 + 'px',
   right: 0
 }
+var font_19px = {
+  fontSize: 19 + 'px'
+}
+var span_cadetblue = {
+  color: 'cadetblue',
+  fontSize: 28 + 'px'
+}
 
 const QuestionTable = [
   '這個工作需要常常與人接觸嗎？',
@@ -279,7 +286,7 @@ class PredictGame extends Component {
       isConfirmAnswer: true,
       queryToken: null,
       answer: null,
-      msgContent: <div>哈哈哈哈沒錯！我就是最神的占卜師！<br/>既然你有這個夢想，就要勇敢實踐它，<br/>「3/18花博爭艷館 實習就業博覽會」<br/>快來實現你的夢想吧！</div>
+      msgContent: <div style={font_19px}>哈哈哈哈沒錯！我就是最神的占卜師！<br/>既然你有這個夢想，就要勇敢實踐它，<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>快來實現你的夢想吧！</div>
     },()=>{
       /*
       送出紀錄資料
@@ -300,7 +307,7 @@ class PredictGame extends Component {
       isConfirmAnswer: false,
       queryToken: null,
       answer: null,
-      msgContent: <div>什麼？我居然失誤了... 太可惡了！讓我再回去修煉一下T_T<br/>「3/18花博爭艷館 實習就業博覽會」<br/>等你再次來挑戰！</div>
+      msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！讓我再回去修煉一下T_T<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>等你再次來挑戰！</div>
     },()=>{
 
     });
