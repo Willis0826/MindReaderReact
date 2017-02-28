@@ -1,5 +1,7 @@
 # MindReader 職業讀心師
-![Alt text](/public/img/startMagic.png)
+<img src="public/img/gitdemo0.png" width="400"><br>
+<img src="public/img/gitdemo1.png" width="400"><br>
+<img src="public/img/gitdemo2.png" width="400"><br>
 ### 關於職業讀心師
 <img src="https://www.echosteg.com/images/blog/standard/nodejs_logo.png" width="200">
 <img src="https://raw.githubusercontent.com/rexxars/react-hexagon/master/logo/react-hexagon.png" width="170"><br>
