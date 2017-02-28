@@ -63,15 +63,17 @@ const QuestionTable = [
   '這個職業非常需要相關科系背景嗎？',
   '這是一個可以在家進行工作的職業嗎？'
 ];
-var LocalQuestion = ['你吃素嗎？','你系歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
+var LocalQuestion = ['你喜歡唱歌嗎？','交過3個以上的男女朋友嗎？','你聽過台北青年職涯發展中心嗎？','你曾經實習過嗎？','你喜歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
 
 class PredictGame extends Component {
   constructor(props){
     super(props);
     this.state = {
       isBegin: false,
+      isGreeting: true,
       isHavingAnswer: false,
       isRecordedWrong: false,
+      isConfirmAnswer: false,
       isLocalQuestion: false,
       queryToken: null,
       msgContent: null,
@@ -84,6 +86,8 @@ class PredictGame extends Component {
     this.replyQuestionWithDeny = this.replyQuestionWithDeny.bind(this);
     this.replyQuestionWithUnknow = this.replyQuestionWithUnknow.bind(this);
     this.denyAnswer = this.denyAnswer.bind(this);
+    this.confirmAnswer = this.confirmAnswer.bind(this);
+    this.greetingOver = this.greetingOver.bind(this);
     this.askLocalQuestion = this.askLocalQuestion.bind(this);
     this.replyLocalQuestion = this.replyLocalQuestion.bind(this);
     this.sendRecord = this.sendRecord.bind(this);
@@ -117,9 +121,12 @@ class PredictGame extends Component {
   }
   showUpGreeting(){
     this.setState({
+      isGreeting: true,
       isBegin: false,
+      isGreeting: true,
       isHavingAnswer: false,
       isRecordedWrong: false,
+      isConfirmAnswer: false,
       queryToken: null,
       msgContent: null,
       answer: null
@@ -261,14 +268,45 @@ class PredictGame extends Component {
       xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
     });
   }
+  confirmAnswer(){
+    var _queryToken = this.state.queryToken;
+    _queryToken.answer = this.state.answer;
+    this.setState({
+      isBegin: true,
+      isGreeting: false,
+      isHavingAnswer: true,
+      isRecordedWrong: false,
+      isConfirmAnswer: true,
+      queryToken: null,
+      answer: null,
+      msgContent: <div>哈哈哈哈沒錯！我就是最神的占卜師！<br/>既然你有這個夢想，就要勇敢實踐它，<br/>「3/18花博爭艷館 實習就業博覽會」<br/>快來實現你的夢想吧！</div>
+    },()=>{
+      /*
+      送出紀錄資料
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "https://mindreader.johnthunder.one/savedata");
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send('questions=' + _queryToken.questions + '&inputs=' + _queryToken.inputs + '&answer=' + _queryToken.answer);
+      console.log(_queryToken);
+      */
+    });
+  }
   denyAnswer(){
     this.setState({
       isBegin: true,
+      isGreeting: false,
       isHavingAnswer: true,
       isRecordedWrong: true,
+      isConfirmAnswer: false,
       queryToken: null,
-      msgContent: <div>什麼！我答錯了嗎？<br/>下一次我會想得更清楚的，在一次。</div>
+      answer: null,
+      msgContent: <div>什麼？我居然失誤了... 太可惡了！讓我再回去修煉一下T_T<br/>「3/18花博爭艷館 實習就業博覽會」<br/>等你再次來挑戰！</div>
+    },()=>{
+
     });
+  }
+  greetingOver(){
+    this.setState({isGreeting: false});
   }
   //Ask Local Question
   askLocalQuestion(){
@@ -405,107 +443,127 @@ class PredictGame extends Component {
             </div>
           ):(
           <div id="question" className="msg_main_wrap">
-            <div className="msg_main_msg">
-            {this.state.isHavingAnswer && !this.state.isRecordedWrong?(
-              <h3>
-                你想從事 : <br/>
-                <span className="yellow-mark"> {this.state.answer} </span><br/>
-                我猜中了嗎 ?
-              </h3>
-            ):(
-              <h3 className="inner-msg">{this.state.msgContent}</h3>
-            )}
-          </div>
-          <div className={this.state.isRecordedWrong && this.state.isHavingAnswer?("col-xs-12 text-center"):("col-xs-6 text-center")}>
-          {this.state.isHavingAnswer?(
-            <div id="againBtn" onClick={this.showUpGreeting} className="again-button-wrap">
-              <div style={magicBall}>
-                <img style={magicBallImg} src="assets/img/magic.png" alt="" />
+          {this.state.isGreeting?(
+            <div>
+              <div className="msg_main_msg text-center">
+                <h3 className="inner-msg">準備好了嗎？<br/>就讓我好好算算你未來的職業吧！</h3>
               </div>
-              <div className="button-text-wrap">
-                <h2>再來一次</h2>
+              <div className="col-xs-12 text-center">
+                <div id="greenBtn" onClick={this.greetingOver} className="yes-button-wrap">
+                  <div style={hat}>
+                    <img style={hatImg} src="assets/img/hat.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>是的</h2>
+                  </div>
+                </div>
               </div>
             </div>
           ):(
-            <div id="greenBtn" onClick={this.replyQuestionWithConfirm} className="yes-button-wrap">
-              <div style={hat}>
-                <img style={hatImg} src="assets/img/hat.png" alt="" />
+            <div>
+              <div className="msg_main_msg">
+              {this.state.isHavingAnswer && !this.state.isRecordedWrong && !this.state.isConfirmAnswer ?(
+                <h3>
+                  你想從事 : <br/>
+                  <span className="yellow-mark"> {this.state.answer} </span><br/>
+                  我猜中了嗎 ?
+                  </h3>
+                ):(
+                  <h3 className="inner-msg">{this.state.msgContent}</h3>
+                )}
               </div>
-              <div className="button-text-wrap">
-                <h2>是的</h2>
+              <div className={(this.state.isConfirmAnswer || this.state.isRecordedWrong) && this.state.isHavingAnswer?("col-xs-12 text-center"):("col-xs-6 text-center")}>
+              {this.state.isHavingAnswer && (this.state.isConfirmAnswer || this.state.isRecordedWrong)?(
+                <div id="againBtn" onClick={this.showUpGreeting} className="again-button-wrap">
+                  <div style={magicBall}>
+                    <img style={magicBallImg} src="assets/img/magic.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>再來一次</h2>
+                  </div>
+                </div>
+              ):(
+                <div id="greenBtn" onClick={this.state.isHavingAnswer?this.confirmAnswer:this.replyQuestionWithConfirm} className="yes-button-wrap">
+                  <div style={hat}>
+                    <img style={hatImg} src="assets/img/hat.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>是的</h2>
+                  </div>
+                </div>
+              )}
               </div>
+              {this.state.isRecordedWrong || this.state.isConfirmAnswer?(null):(
+              <div className="col-xs-6 text-center">
+                <div id="redBtn" onClick={this.state.isHavingAnswer?this.denyAnswer:this.replyQuestionWithDeny} className="no-button-wrap">
+                  <div className="" style={water}>
+                    <img style={waterImg} src="assets/img/water.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>不是</h2>
+                  </div>
+                </div>
+              </div>
+              )}
+              {this.state.isHavingAnswer?(null):(
+              <div className="col-xs-12 text-center">
+                <div id="unknowBtn" onClick={this.replyQuestionWithUnknow} className="unknow-button-wrap">
+                  <div className="" style={poker}>
+                    <img style={waterImg} src="assets/img/poker.png" alt="" />
+                  </div>
+                  <div className="button-text-wrap">
+                    <h2>不確定</h2>
+                  </div>
+                </div>
+              </div>
+              )}
             </div>
-          )}
-          </div>
-          {this.state.isRecordedWrong?(null):(
-          <div className="col-xs-6 text-center">
-            <div id="redBtn" onClick={this.state.isHavingAnswer?this.denyAnswer:this.replyQuestionWithDeny} className="no-button-wrap">
-              <div className="" style={water}>
-                <img style={waterImg} src="assets/img/water.png" alt="" />
-              </div>
-              <div className="button-text-wrap">
-                <h2>不是</h2>
-              </div>
-            </div>
-          </div>
-          )}
-          {this.state.isHavingAnswer?(null):(
-          <div className="col-xs-12 text-center">
-            <div id="unknowBtn" onClick={this.replyQuestionWithUnknow} className="unknow-button-wrap">
-              <div className="" style={poker}>
-                <img style={waterImg} src="assets/img/poker.png" alt="" />
-              </div>
-              <div className="button-text-wrap">
-                <h2>不確定</h2>
-              </div>
-            </div>
+            )}
           </div>
           )}
         </div>
-        )}
       </div>
-    </div>
-    ):(
-        <div>
-          <img ref="bgStart" src="assets/img/startMagic.png" className="full-res-bgStart"/>
-          <div id="greeting" className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
-            <div className="contain-white text-center">
-              <h2 className="contain-title">職業讀心師</h2>
-              <h3 className="contain-sub">我是擁有神秘力量的占卜師，只要你在心裡想著自己未來最想從事下列的哪一個職業，我就可以猜出來唷！</h3>
-              <div className="text-center" style={jobWapper}>
-                <div className="job-wrap">軍人</div>
-                <div className="job-wrap">空服員</div>
-                <div className="job-wrap">記者</div>
-                <div className="job-wrap">業務</div>
-                <div className="job-wrap">警察</div>
-                <div className="job-wrap">翻譯</div>
-                <div className="job-wrap">農夫</div>
-                <div className="job-wrap">銀行員</div>
-                <div className="job-wrap">工程師</div>
-                <div className="job-wrap">廚師</div>
-                <div className="job-wrap">建築師</div>
-                <div className="job-wrap">攝影師</div>
-                <div className="job-wrap">廣告設計</div>
-                <div className="job-wrap">運動員</div>
-                <div className="job-wrap">老師</div>
-                <div className="job-wrap">作家</div>
-                <div className="job-wrap">律師</div>
-                <div className="job-wrap">藝人</div>
-                <div className="job-wrap">導遊</div>
-                <div className="job-wrap">醫生</div>
+      ):(
+      <div>
+        <img ref="bgStart" src="assets/img/startMagic.png" className="full-res-bgStart"/>
+        <div id="greeting" className="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
+          <div className="contain-white text-center">
+            <h2 className="contain-title">職業讀心師</h2>
+            <h3 className="contain-sub">我是擁有神秘力量的占卜師，只要你在心裡想著自己未來最想從事下列的哪一個職業，我就可以猜出來唷！</h3>
+            <div className="text-center" style={jobWapper}>
+              <div className="job-wrap">軍人</div>
+              <div className="job-wrap">空服員</div>
+              <div className="job-wrap">記者</div>
+              <div className="job-wrap">業務</div>
+              <div className="job-wrap">警察</div>
+              <div className="job-wrap">翻譯</div>
+              <div className="job-wrap">農夫</div>
+              <div className="job-wrap">銀行員</div>
+              <div className="job-wrap">工程師</div>
+              <div className="job-wrap">廚師</div>
+              <div className="job-wrap">建築師</div>
+              <div className="job-wrap">攝影師</div>
+              <div className="job-wrap">廣告設計</div>
+              <div className="job-wrap">運動員</div>
+              <div className="job-wrap">老師</div>
+              <div className="job-wrap">作家</div>
+              <div className="job-wrap">律師</div>
+              <div className="job-wrap">藝人</div>
+              <div className="job-wrap">導遊</div>
+              <div className="job-wrap">醫生</div>
+            </div>
+            <div onClick={this.showUpMsgBox} className="start-button-wrap">
+              <div className="" style={crystalBall}>
+                <img style={crystalBallImg} src="assets/img/crystal-ball.png" alt="" />
               </div>
-              <div onClick={this.showUpMsgBox} className="start-button-wrap">
-                <div className="" style={crystalBall}>
-                  <img style={crystalBallImg} src="assets/img/crystal-ball.png" alt="" />
-                </div>
-                <div className="button-text-wrap">
-                  <h2>開始占卜</h2>
-                </div>
+              <div className="button-text-wrap">
+                <h2>開始占卜</h2>
               </div>
             </div>
           </div>
         </div>
-        )}
+      </div>
+      )}
     </div>
     );
   }

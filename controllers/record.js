@@ -7,7 +7,7 @@ module.exports = function(req, res, next){
     professions: [
       {profession: '軍人',
       count: 0},
-      {profession: '空服員',
+      {profession: '空服人員',
       count: 0},
       {profession: '記者',
       count: 0},
