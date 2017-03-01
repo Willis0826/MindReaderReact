@@ -82,6 +82,7 @@ class PredictGame extends Component {
       isRecordedWrong: false,
       isConfirmAnswer: false,
       isLocalQuestion: false,
+      isReceiveResponse: false,
       queryToken: null,
       msgContent: null,
       answer: null
@@ -108,11 +109,13 @@ class PredictGame extends Component {
         questions: null,
         inputs: null
       };
+      this.state.isReceiveResponse = false;//尚未收到回應
       xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && xhttp.status == 200){
           var resOject = JSON.parse(xhttp.responseText);
           var questionNum = parseInt(resOject.Question.split("Q")[1]);
           this.setState({
+            isReceiveResponse: true,
             msgContent: QuestionTable[questionNum-1],
             queryToken: {
               questions: resOject.Question,
@@ -134,6 +137,7 @@ class PredictGame extends Component {
       isHavingAnswer: false,
       isRecordedWrong: false,
       isConfirmAnswer: false,
+      isReceiveResponse: false,
       queryToken: null,
       msgContent: null,
       answer: null
@@ -142,138 +146,150 @@ class PredictGame extends Component {
   //是 回應問題
   replyQuestionWithConfirm(){
     //動畫效果
-    document.getElementById('question').style.opacity = 0;
-    this.setState({
-      queryToken: {
-        questions: this.state.queryToken.questions,
-        inputs: this.state.queryToken.inputs + ',5'
-      }
-    }, ()=>{
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = ()=> {
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-          var resOject = JSON.parse(xhttp.responseText);
-          if(resOject.Question == null){
-            //有答案了
-            this.setState({
-              isHavingAnswer: true,
-              answer: resOject.Answer
-            },this.sendRecord);
-          }
-          else{
-            var questionNum = parseInt(resOject.Question.split("Q")[1]);
-            this.setState({
-              msgContent: QuestionTable[questionNum-1],
-              queryToken: {
-                questions: this.state.queryToken.questions + "," + resOject.Question,
-                inputs: this.state.queryToken.inputs
-              }
-            });
-          }
-          //動畫效果
-          document.getElementById('question').style.opacity = 1;
+    if(this.state.isReceiveResponse){
+      this.state.isReceiveResponse = false;//尚未收到回應
+      document.getElementById('question').style.opacity = 0;
+      this.setState({
+        queryToken: {
+          questions: this.state.queryToken.questions,
+          inputs: this.state.queryToken.inputs + ',5'
         }
-      }
-      if(this.state.queryToken.inputs.indexOf(',') == 0){
-        //,在第一位 需要調整
-        this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
-      }
-      xhttp.open("POST", "https://mindreader.johnthunder.one/");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
-    });
+      }, ()=>{
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = ()=> {
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            this.state.isReceiveResponse = true;//收到回應
+            var resOject = JSON.parse(xhttp.responseText);
+            if(resOject.Question == null){
+              //有答案了
+              this.setState({
+                isHavingAnswer: true,
+                answer: resOject.Answer
+              },this.sendRecord);
+            }
+            else{
+              var questionNum = parseInt(resOject.Question.split("Q")[1]);
+              this.setState({
+                msgContent: QuestionTable[questionNum-1],
+                queryToken: {
+                  questions: this.state.queryToken.questions + "," + resOject.Question,
+                  inputs: this.state.queryToken.inputs
+                }
+              });
+            }
+            //動畫效果
+            document.getElementById('question').style.opacity = 1;
+          }
+        }
+        if(this.state.queryToken.inputs.indexOf(',') == 0){
+          //,在第一位 需要調整
+          this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
+        }
+        xhttp.open("POST", "https://mindreader.johnthunder.one/");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
+      });
+    }
   }
   //不是 回應問題
   replyQuestionWithDeny(){
     //動畫效果
-    document.getElementById('question').style.opacity = 0;
-    this.setState({
-      queryToken: {
-        questions: this.state.queryToken.questions,
-        inputs: this.state.queryToken.inputs + ',1'
-      }
-    }, ()=>{
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = ()=> {
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-          var resOject = JSON.parse(xhttp.responseText);
-          if(resOject.Question == null){
-            //有答案了
-            this.setState({
-              isHavingAnswer: true,
-              answer: resOject.Answer
-            },this.sendRecord);
-          }
-          else{
-            var questionNum = parseInt(resOject.Question.split("Q")[1]);
-            this.setState({
-              msgContent: QuestionTable[questionNum-1],
-              queryToken: {
-                questions: this.state.queryToken.questions + "," + resOject.Question,
-                inputs: this.state.queryToken.inputs
-              }
-            },()=>{
-              if(LocalQuestion.length > 0){
-                this.askLocalQuestion();
-              }
-            });
-          }
-          //動畫效果
-          document.getElementById('question').style.opacity = 1;
+    if(this.state.isReceiveResponse){
+      this.state.isReceiveResponse = false;//尚未收到回應
+      document.getElementById('question').style.opacity = 0;
+      this.setState({
+        queryToken: {
+          questions: this.state.queryToken.questions,
+          inputs: this.state.queryToken.inputs + ',1'
         }
-      }
-      if(this.state.queryToken.inputs.indexOf(',') == 0){
-        //,在第一位 需要調整
-        this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
-      }
-      xhttp.open("POST", "https://mindreader.johnthunder.one/");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
-    });
+      }, ()=>{
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = ()=> {
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            this.state.isReceiveResponse = true;//收到回應
+            var resOject = JSON.parse(xhttp.responseText);
+            if(resOject.Question == null){
+              //有答案了
+              this.setState({
+                isHavingAnswer: true,
+                answer: resOject.Answer
+              },this.sendRecord);
+            }
+            else{
+              var questionNum = parseInt(resOject.Question.split("Q")[1]);
+              this.setState({
+                msgContent: QuestionTable[questionNum-1],
+                queryToken: {
+                  questions: this.state.queryToken.questions + "," + resOject.Question,
+                  inputs: this.state.queryToken.inputs
+                }
+              },()=>{
+                if(LocalQuestion.length > 0){
+                  this.askLocalQuestion();
+                }
+              });
+            }
+            //動畫效果
+            document.getElementById('question').style.opacity = 1;
+          }
+        }
+        if(this.state.queryToken.inputs.indexOf(',') == 0){
+          //,在第一位 需要調整
+          this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
+        }
+        xhttp.open("POST", "https://mindreader.johnthunder.one/");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
+      });
+    }
   }
   //不知道 回應問題
   replyQuestionWithUnknow(){
     //動畫效果
-    document.getElementById('question').style.opacity = 0;
-    this.setState({
-      queryToken: {
-        questions: this.state.queryToken.questions,
-        inputs: this.state.queryToken.inputs + ',3'
-      }
-    }, ()=>{
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = ()=> {
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-          var resOject = JSON.parse(xhttp.responseText);
-          if(resOject.Question == null){
-            //有答案了
-            this.setState({
-              isHavingAnswer: true,
-              answer: resOject.Answer
-            },this.sendRecord);
-          }
-          else{
-            var questionNum = parseInt(resOject.Question.split("Q")[1]);
-            this.setState({
-              msgContent: QuestionTable[questionNum-1],
-              queryToken: {
-                questions: this.state.queryToken.questions + "," + resOject.Question,
-                inputs: this.state.queryToken.inputs
-              }
-            });
-          }
-          //動畫效果
-          document.getElementById('question').style.opacity = 1;
+    if(this.state.isReceiveResponse){
+      this.state.isReceiveResponse = false;//尚未收到回應
+      document.getElementById('question').style.opacity = 0;
+      this.setState({
+        queryToken: {
+          questions: this.state.queryToken.questions,
+          inputs: this.state.queryToken.inputs + ',3'
         }
-      }
-      if(this.state.queryToken.inputs.indexOf(',') == 0){
-        //,在第一位 需要調整
-        this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
-      }
-      xhttp.open("POST", "https://mindreader.johnthunder.one/");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
-    });
+      }, ()=>{
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = ()=> {
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            this.state.isReceiveResponse = true;//收到回應
+            var resOject = JSON.parse(xhttp.responseText);
+            if(resOject.Question == null){
+              //有答案了
+              this.setState({
+                isHavingAnswer: true,
+                answer: resOject.Answer
+              },this.sendRecord);
+            }
+            else{
+              var questionNum = parseInt(resOject.Question.split("Q")[1]);
+              this.setState({
+                msgContent: QuestionTable[questionNum-1],
+                queryToken: {
+                  questions: this.state.queryToken.questions + "," + resOject.Question,
+                  inputs: this.state.queryToken.inputs
+                }
+              });
+            }
+            //動畫效果
+            document.getElementById('question').style.opacity = 1;
+          }
+        }
+        if(this.state.queryToken.inputs.indexOf(',') == 0){
+          //,在第一位 需要調整
+          this.state.queryToken.inputs = this.state.queryToken.inputs.split(',')[1];
+        }
+        xhttp.open("POST", "https://mindreader.johnthunder.one/");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
+      });
+    }
   }
   confirmAnswer(){
     var _queryToken = this.state.queryToken;
