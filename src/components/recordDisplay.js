@@ -6,10 +6,12 @@ class RecordDisplay extends Component {
     super(props);
     this.state = {
       isProcessing: true,
-      myChart: null
+      myChart: null,
+      infoMessage: '點擊長條圖，可以獲得詳細資料'
     };
     this.displayTotalCount = this.displayTotalCount.bind(this);
     this.displaySelectedCount = this.displaySelectedCount.bind(this);
+    this.displayResult = this.displayResult.bind(this);
   }
   componentDidMount(prevProps, prevState){
     this.displayTotalCount();
@@ -20,11 +22,15 @@ class RecordDisplay extends Component {
       this.state.myChart.destroy();
       this.state.myChart = null;
     }
+    this.setState({
+      isProcessing: true
+    });
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = ()=>{
       if(xhttp.readyState == 4 && xhttp.status == 200){
         this.setState({
-          isProcessing: false
+          isProcessing: false,
+          infoMessage: '點擊長條圖，可以獲得詳細資料'
         },()=>{
           var resObject = JSON.parse(xhttp.responseText);
           var ctx = document.getElementById("myChart");
@@ -37,7 +43,8 @@ class RecordDisplay extends Component {
                   data: resObject.records,
                   backgroundColor: resObject.barColors,
                   borderColor: resObject.barBorderColors,
-                  borderWidth: 1
+                  borderWidth: 1,
+                  fontColor: 'rgba(255,255,255,1)'
               }]
             },
             options: {
@@ -89,7 +96,8 @@ class RecordDisplay extends Component {
       xhttp.onreadystatechange = ()=>{
         if(xhttp.readyState == 4 && xhttp.status == 200){
           this.setState({
-            isProcessing: false
+            isProcessing: false,
+            infoMessage: '總攬(場次)，顯示全部場次人數'
           }, ()=>{
             var resObject = JSON.parse(xhttp.responseText);
             var ctx = document.getElementById("myChart");
@@ -140,6 +148,10 @@ class RecordDisplay extends Component {
       xhttp.send();
     }
   }
+  displayResult(){
+    //顯示機器人狀態
+    
+  }
   render() {
     return (
       <div className="row">
@@ -156,11 +168,18 @@ class RecordDisplay extends Component {
           <canvas id="myChart" width="100" height="400"></canvas>
           )}
         </div>
-        <div className="col-md-3 col-md-offset-3 text-center margin-bottom-20">
-          <div onClick={this.displayTotalCount} className="btn-white">總覽(場次)</div>
+        <div className="row">
+          <div className="col-sm-3 col-sm-offset-3 text-center margin-bottom-20">
+            <div onClick={this.displayTotalCount} className="btn-white">總覽(場次)</div>
+          </div>
+          <div className="col-sm-3 text-center">
+            <div className="white-text">{this.state.infoMessage}</div>
+          </div>
         </div>
-        <div className="col-md-3 text-center">
-          <div className="white-text">點擊長條圖，可以獲得詳細資料</div>
+        <div className="row">
+          <div className="col-sm-3 col-sm-offset-3 text-center margin-bottom-20">
+            <div onClick={this.displayResult} className="btn-white">結果(狀態)</div>
+          </div>
         </div>
       </div>
     );

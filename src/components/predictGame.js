@@ -70,7 +70,7 @@ const QuestionTable = [
   '這個職業非常需要相關科系背景嗎？',
   '這是一個可以在家進行工作的職業嗎？'
 ];
-var LocalQuestion = ['你喜歡唱歌嗎？','交過3個以上的男女朋友嗎？','你聽過台北青年職涯發展中心嗎？','你曾經實習過嗎？','你喜歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
+var LocalQuestion = ['你喜歡唱歌嗎？','交過3個以上的男/女朋友嗎？','你聽過台北青年職涯發展中心嗎？','你曾經實習過嗎？','你喜歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
 
 class PredictGame extends Component {
   constructor(props){
@@ -291,9 +291,9 @@ class PredictGame extends Component {
       });
     }
   }
+  //確認 答案
   confirmAnswer(){
-    var _queryToken = this.state.queryToken;
-    _queryToken.answer = this.state.answer;
+    var _answer = this.state.answer;//避免 state 被清空
     this.setState({
       isBegin: true,
       isGreeting: false,
@@ -312,9 +312,24 @@ class PredictGame extends Component {
       xhttp.send('questions=' + _queryToken.questions + '&inputs=' + _queryToken.inputs + '&answer=' + _queryToken.answer);
       console.log(_queryToken);
       */
+      var xhttp = new XMLHttpRequest();
+      var newResult = {
+        profession: _answer,
+        isRight: 1
+      };
+      xhttp.onreadystatechange = function () {
+        if(xhttp.readyState == 4 && xhttp.status == 200){
+
+        }
+      }
+      xhttp.open("POST", "/result");
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhttp.send(JSON.stringify(newResult));
     });
   }
+  //否認 答案
   denyAnswer(){
+    var _answer = this.state.answer;
     this.setState({
       isBegin: true,
       isGreeting: false,
@@ -325,7 +340,19 @@ class PredictGame extends Component {
       answer: null,
       msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！讓我再回去修煉一下T_T<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>等你再次來挑戰！</div>
     },()=>{
+      var xhttp = new XMLHttpRequest();
+      var newResult = {
+        profession: _answer,
+        isRight: 0
+      };
+      xhttp.onreadystatechange = function () {
+        if(xhttp.readyState == 4 && xhttp.status == 200){
 
+        }
+      }
+      xhttp.open("POST", "/result");
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhttp.send(JSON.stringify(newResult));
     });
   }
   greetingOver(){
