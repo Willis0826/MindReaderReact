@@ -130,6 +130,17 @@ class PredictGame extends Component {
     });
   }
   showUpGreeting(){
+    var _queryToken = this.state.queryToken;
+    var _answer = this.state.answer;
+    if(this.state.isRecordedWrong){
+      //已經玩過一次
+      console.log(1);
+      //送出紀錄資料
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "https://mindreader.johnthunder.one/savedata");
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send('questions=' + _queryToken.questions + '&inputs=' + _queryToken.inputs + '&answer=' + _answer);
+    }
     this.setState({
       isGreeting: true,
       isBegin: false,
@@ -336,9 +347,7 @@ class PredictGame extends Component {
       isHavingAnswer: true,
       isRecordedWrong: true,
       isConfirmAnswer: false,
-      queryToken: null,
-      answer: null,
-      msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！讓我再回去修煉一下T_T<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>等你再次來挑戰！</div>
+      msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>等你再次來挑戰！</div>
     },()=>{
       var xhttp = new XMLHttpRequest();
       var newResult = {
@@ -516,7 +525,36 @@ class PredictGame extends Component {
                   我猜中了嗎 ?
                   </h3>
                 ):(
-                  <h3 className="inner-msg">{this.state.msgContent}</h3>
+                  <div>
+                    <h3 className="inner-msg">{this.state.msgContent}</h3>
+                    {this.state.isRecordedWrong ?(
+                    <div className="select-wapper">
+                      正確答案
+                      <select onChange={(e)=>{this.state.answer = e.target.value;}}>
+                        <option value="軍人">軍人</option>
+                        <option value="空服人員">空服人員</option>
+                        <option value="記者">記者</option>
+                        <option value="業務">業務</option>
+                        <option value="警察">警察</option>
+                        <option value="翻譯">翻譯</option>
+                        <option value="農夫">農夫</option>
+                        <option value="銀行員">銀行員</option>
+                        <option value="工程師">工程師</option>
+                        <option value="廚師">廚師</option>
+                        <option value="建築師">建築師</option>
+                        <option value="攝影師">攝影師</option>
+                        <option value="廣告設計">廣告設計</option>
+                        <option value="運動員">運動員</option>
+                        <option value="老師">老師</option>
+                        <option value="作家">作家</option>
+                        <option value="律師">律師</option>
+                        <option value="藝人">藝人</option>
+                        <option value="導遊">導遊</option>
+                        <option value="醫生">醫生</option>
+                        </select>
+                      </div>
+                    ):(null)}
+                  </div>
                 )}
               </div>
               <div className={(this.state.isConfirmAnswer || this.state.isRecordedWrong) && this.state.isHavingAnswer?("col-xs-12 text-center"):("col-xs-6 text-center")}>

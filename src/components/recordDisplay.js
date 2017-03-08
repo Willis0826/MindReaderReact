@@ -137,7 +137,8 @@ class RecordDisplay extends Component {
                   }],
                 },
                 maintainAspectRatio: false,
-                responsive:true
+                responsive:true,
+                onClick: null
               }
             });
             this.state.myChart = myChart;
@@ -150,7 +151,14 @@ class RecordDisplay extends Component {
   }
   displayResult(){
     //顯示機器人狀態
-    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = ()=>{
+      if(xhttp.readyState == 4 && xhttp.status == 200){
+
+      }
+    }
+    xhttp.open("GET", "/result");
+    xhttp.send();
   }
   render() {
     return (

@@ -321,6 +321,15 @@ footer a:hover{
   text-decoration: none;
 }
 
+/* Select Box */
+.select-wapper{
+  font-weight: bold;
+  text-align: center;
+}
+.select-wapper select{
+  margin-left: 15px;
+}
+
 /* My loading Event */
 .loading-wapper{
   position: relative;
