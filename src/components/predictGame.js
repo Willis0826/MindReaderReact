@@ -35,6 +35,14 @@ var crystalBall = {
 var crystalBallImg = {
   width: 80 + 'px'
 }
+var crystalStar = {
+  position: 'absolute',
+  marginTop: -30 + 'px',
+  marginLeft: -15 + 'px'
+}
+var crystalStarImg = {
+  width: 45 + 'px'
+}
 var poker = {
   position: 'absolute',
   marginTop: -20 + 'px',
@@ -47,6 +55,10 @@ var font_19px = {
 var span_cadetblue = {
   color: 'cadetblue',
   fontSize: 28 + 'px'
+}
+var span_cadetblue_24 = {
+  color: 'cadetblue',
+  fontSize: 24 + 'px'
 }
 
 const QuestionTable = [
@@ -101,33 +113,42 @@ class PredictGame extends Component {
     this.sendRecord = this.sendRecord.bind(this);
   }
   showUpMsgBox(){
-    //init game
-    this.setState({isBegin: true},()=>{
-      //get Question
-      var xhttp = new XMLHttpRequest();
-      this.state.queryToken = {
-        questions: null,
-        inputs: null
-      };
-      this.state.isReceiveResponse = false;//尚未收到回應
-      xhttp.onreadystatechange = () => {
-        if(xhttp.readyState == 4 && xhttp.status == 200){
-          var resOject = JSON.parse(xhttp.responseText);
-          var questionNum = parseInt(resOject.Question.split("Q")[1]);
-          this.setState({
-            isReceiveResponse: true,
-            msgContent: QuestionTable[questionNum-1],
-            queryToken: {
-              questions: resOject.Question,
-              inputs: ''
-            }
-          });
+    document.getElementById('greeting').className += ' out';//動畫效果
+    setTimeout(()=>{
+      //init game
+      this.setState({isBegin: true},()=>{
+        // setTimeout(()=>{
+        //   document.getElementsByClassName('full-res-bg1')[0].className = 'magic_light full-res-bg1';
+        //   setTimeout(()=>{
+        //     document.getElementsByClassName('full-res-bg1')[0].className = 'sec8_trans full-res-bg1';
+        //   },800);
+        // },800);
+        //get Question
+        var xhttp = new XMLHttpRequest();
+        this.state.queryToken = {
+          questions: null,
+          inputs: null
+        };
+        this.state.isReceiveResponse = false;//尚未收到回應
+        xhttp.onreadystatechange = () => {
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            var resOject = JSON.parse(xhttp.responseText);
+            var questionNum = parseInt(resOject.Question.split("Q")[1]);
+            this.setState({
+              isReceiveResponse: true,
+              msgContent: QuestionTable[questionNum-1],
+              queryToken: {
+                questions: resOject.Question,
+                inputs: ''
+              }
+            });
+          }
         }
-      }
-      xhttp.open("POST", "https://mindreader.johnthunder.one/");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
-    });
+        xhttp.open("POST", "https://mindreader.johnthunder.one/");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('questions=' + this.state.queryToken.questions + '&inputs=' + this.state.queryToken.inputs);
+      });
+    },800);
   }
   showUpGreeting(){
     var _queryToken = this.state.queryToken;
@@ -315,14 +336,6 @@ class PredictGame extends Component {
       answer: null,
       msgContent: <div style={font_19px}>哈哈哈哈沒錯！我就是最神的占卜師！<br/>既然你有這個夢想，就要勇敢實踐它，<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>快來實現你的夢想吧！</div>
     },()=>{
-      /*
-      送出紀錄資料
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "https://mindreader.johnthunder.one/savedata");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send('questions=' + _queryToken.questions + '&inputs=' + _queryToken.inputs + '&answer=' + _queryToken.answer);
-      console.log(_queryToken);
-      */
       var xhttp = new XMLHttpRequest();
       var newResult = {
         profession: _answer,
@@ -347,8 +360,9 @@ class PredictGame extends Component {
       isHavingAnswer: true,
       isRecordedWrong: true,
       isConfirmAnswer: false,
-      msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！<br/><span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span><br/>等你再次來挑戰！</div>
+      msgContent: <div style={font_19px}>什麼？我居然失誤了... 太可惡了！<br/>你可以告訴我妳的答案嗎！</div>
     },()=>{
+      //<span style={span_cadetblue}>3/18花博爭艷館 <br/>實習就業博覽會</span>
       var xhttp = new XMLHttpRequest();
       var newResult = {
         profession: _answer,
@@ -528,8 +542,8 @@ class PredictGame extends Component {
                   <div>
                     <h3 className="inner-msg">{this.state.msgContent}</h3>
                     {this.state.isRecordedWrong ?(
-                    <div className="select-wapper">
-                      正確答案
+                    <div style={span_cadetblue_24} className="select-wapper">
+                      <span>正確答案</span>
                       <select onChange={(e)=>{this.state.answer = e.target.value;}}>
                         <option value="軍人">軍人</option>
                         <option value="空服人員">空服人員</option>
@@ -640,6 +654,9 @@ class PredictGame extends Component {
             <div onClick={this.showUpMsgBox} className="start-button-wrap">
               <div className="" style={crystalBall}>
                 <img style={crystalBallImg} src="assets/img/crystal-ball.png" alt="" />
+              </div>
+              <div className="" style={crystalStar}>
+                <img style={crystalStarImg} src="assets/img/stars.png" alt="" />
               </div>
               <div className="button-text-wrap">
                 <h2>開始占卜</h2>

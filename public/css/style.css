@@ -21,8 +21,13 @@ body{
 }
 
 #greeting{
+  opacity: 1;
+  transition: all .8s ease-in-out;
   padding-top: 50px;
   z-index: 1000;
+}
+#greeting.out{
+  opacity: 0;
 }
 /* 對話訊息框 初始隱藏 */
 #question{
@@ -143,7 +148,13 @@ body{
   background-position: 1px 1px;
   background-size: contain;
 }
+.sec8_trans{
+  transition: all .2s ease-in-out;
+}
 .full-res-bg1{
+  background: radial-gradient(rgba(255,255,255,0), rgba(255,255,255,0));
+  box-shadow: 0px 0px 0px #888888;
+  border-radius: 50%;
   display: block;
   position: absolute;;
   bottom: 250px;
@@ -258,6 +269,14 @@ h3.contain-sub{
 .start-button-wrap:hover .button-text-wrap, .unknow-button-wrap:hover .button-text-wrap, .yes-button-wrap:hover .button-text-wrap, .no-button-wrap:hover .button-text-wrap, .again-button-wrap:hover .button-text-wrap{
   background: #ffd966;
 }
+.start-button-wrap:hover div:nth-child(2){
+  opacity: 1;
+  transition: all .2s ease-in-out;
+}
+.start-button-wrap div:nth-child(2){
+  opacity: 0;
+  transition: all .2s ease-in-out;
+}
 .start-button-wrap .button-text-wrap{
   background: rgba(0,0,0,1);
   border-radius: 4px;
@@ -319,6 +338,13 @@ footer a{
 }
 footer a:hover{
   text-decoration: none;
+}
+
+/**/
+.magic_light{
+  transition: all .6s ease-in-out;
+  background: radial-gradient(rgba(255,255,255,.3), rgba(255,255,255,0));
+  box-shadow: 0px 0px 95px #888888;
 }
 
 /* Select Box */
