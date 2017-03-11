@@ -82,7 +82,7 @@ const QuestionTable = [
   '這個職業非常需要相關科系背景嗎？',
   '這是一個可以在家進行工作的職業嗎？'
 ];
-var LocalQuestion = ['你喜歡唱歌嗎？','交過3個以上的男/女朋友嗎？','你聽過台北青年職涯發展中心嗎？','你曾經實習過嗎？','你喜歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
+var LocalQuestion = ['你喜歡唱歌嗎？','交過3個以上的男/女朋友嗎？','你聽過臺北青年職涯發展中心嗎？','你曾經實習過嗎？','你喜歡夏天勝過冬天嗎？','你有聽過「孤單又燦爛的神－鬼怪」這部韓劇嗎？','你喜歡喝手搖飲料嗎？'];
 
 class PredictGame extends Component {
   constructor(props){
@@ -117,12 +117,6 @@ class PredictGame extends Component {
     setTimeout(()=>{
       //init game
       this.setState({isBegin: true},()=>{
-        // setTimeout(()=>{
-        //   document.getElementsByClassName('full-res-bg1')[0].className = 'magic_light full-res-bg1';
-        //   setTimeout(()=>{
-        //     document.getElementsByClassName('full-res-bg1')[0].className = 'sec8_trans full-res-bg1';
-        //   },800);
-        // },800);
         //get Question
         var xhttp = new XMLHttpRequest();
         this.state.queryToken = {
