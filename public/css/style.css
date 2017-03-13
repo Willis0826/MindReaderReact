@@ -259,7 +259,15 @@ h3.contain-sub{
   padding-top: 12px;
   padding-bottom: 12px;
 }
-
+.start-button-wrap:hover img{
+   transform: rotate(7deg);
+}
+.yes-button-wrap:hover img{
+   transform: rotate(7deg);
+}
+.no-button-wrap:hover img{
+   transform: rotate(-7deg);
+}
 .start-button-wrap, .unknow-button-wrap, .yes-button-wrap, .no-button-wrap, .again-button-wrap{
   display: inline-block;
   margin-top: 20px;
