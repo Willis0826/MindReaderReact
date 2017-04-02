@@ -3,11 +3,14 @@
 <img src="public/img/gitdemo1.png" width="400"><br>
 <img src="public/img/gitdemo2.png" width="400"><br>
 ### 關於職業讀心師
-<img src="https://www.echosteg.com/images/blog/standard/nodejs_logo.png" width="200"/>
-<img src="https://raw.githubusercontent.com/rexxars/react-hexagon/master/logo/react-hexagon.png" width="170"/><br>
+<img src="https://www.echosteg.com/images/blog/standard/nodejs_logo.png" width="200"/><img src="https://raw.githubusercontent.com/rexxars/react-hexagon/master/logo/react-hexagon.png" width="170"/><br>
+
 使用React與Node.js框架進行開發，資料庫mLab(MongoDB)。<br>
+
 串接機器學習問答 https://mindreader.johnthunder.one/ <br>
+
 後台統計系統，紀錄所有使用者結果，並且依照場次進行統計<br>
+
 #### 路由表Router : <br>
 <code>
 / -> 首頁<br>
