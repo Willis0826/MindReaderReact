@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var options = { server: { socketOptions: { connectTimeoutMS: 10000 }}};
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://PopoChou:1234@ds013206.mlab.com:13206/msmidereader',options);
+mongoose.connect(`mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@${process.env.MLAB_URL}`,options);
 var Schema = mongoose.Schema;
 var recordSchema = new Schema({
   eventName: String,
